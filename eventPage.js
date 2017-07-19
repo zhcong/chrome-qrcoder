@@ -1,5 +1,5 @@
 ﻿function check(table_id,data,tab){
-	if(tab.url=='chrome://newtab/'){
+	if(tab.url.indexOf("chrome://") >= 0){
 		chrome.pageAction.hide(table_id);
 	}else{
 		chrome.pageAction.show(table_id);
