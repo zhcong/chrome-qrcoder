@@ -31,8 +31,7 @@
 		"contextMenus",
 		"http://*/",
 		"https://*/",
-		"ftp://*/",
-		"https://hao.360.cn/"
+		"ftp://*/"
 	],
 	"web_accessible_resources": [
 		"images/close.svg"

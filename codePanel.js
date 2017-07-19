@@ -21,6 +21,7 @@ QRRSBlock.getRSBlocks=function(typeNumber,errorCorrectLevel){var rsBlock=QRRSBlo
 			</div> \
 		</div>";
 		*/
+		if(document.getElementById('qrcode_background')!=null) qr_close();
 var background_id = document.createElement('DIV');
 background_id.id='qrcode_background';
 

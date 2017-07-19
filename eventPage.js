@@ -6,10 +6,10 @@
 	}
 };
 function draw(str,tab){
-	chrome.tabs.executeScript(null,{code: "if(document.getElementById('qrcode_panel')!=null) document.getElementById('qrcode_panel').parentNode.removeChild(document.getElementById('qrcode_panel'))"});
+	chrome.tabs.executeScript(null,{code: "var qr_text=\'"+str+"\'"});
+	console.log(str);
 	chrome.tabs.insertCSS(null,{file:'qrcoder_css.css'});
 	chrome.tabs.executeScript(null,{file: "codePanel.js"});
-	chrome.tabs.executeScript(null,{code: "var qr_text=\'"+str+"\'"});
 }
 
 chrome.tabs.onUpdated.addListener(check);
