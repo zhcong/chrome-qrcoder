@@ -23,7 +23,7 @@
 		"default_title": "二维码"
 	},
 	// "commands": {},
-	"homepage_url":"http://github.com",
+	"homepage_url":"https://github.com/zhcong/chrome-qrcoder",
 	"minimum_chrome_version":"18",
 	"permissions" : [
 		"tabs",
