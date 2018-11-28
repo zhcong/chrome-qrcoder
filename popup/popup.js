@@ -1032,50 +1032,66 @@
 	}
 } ());
 
-if(document.getElementById('qrcode_background')!=null) qr_close();
-var background_id = document.createElement('DIV');
-background_id.id='qrcode_background';
 
-var background_panel_id = document.createElement('DIV');
-background_panel_id.className='qrcode_background';
-background_panel_id.onclick=qr_close;
-var qrcode_panel = document.createElement('DIV');
-qrcode_panel.id='qrcode_panel';
-qrcode_panel.className='qrcode_panel';
-var qrcode_image = document.createElement('DIV');
-qrcode_image.id='qrcode_image';
-qrcode_image.className='qrcode_image';
-var qrcode_text = document.createElement('DIV');
-qrcode_text.className='qrcode_text';
-var qrcode_text_p = document.createElement('P');
-qrcode_text_p.innerHTML = qr_text;
-var qrcode_close = document.createElement('DIV');
-qrcode_close.className='qrcode_close';
-var qrcode_close_button = document.createElement('DIV');
-qrcode_close_button.className='qrcode_close_button';
-qrcode_close_button.onclick=qr_close;
-var qrcode_close_button_img = document.createElement('img');
-qrcode_close_button_img.src = chrome.extension.getURL('images/close.svg');
-qrcode_close_button_img.style = 'width:30px;height:30px;'
-
-qrcode_close_button.appendChild(qrcode_close_button_img);
-qrcode_close.appendChild(qrcode_close_button);
-qrcode_text.appendChild(qrcode_text_p);
-qrcode_panel.appendChild(qrcode_image);
-qrcode_panel.appendChild(qrcode_text);
-qrcode_panel.appendChild(qrcode_close);
-background_id.appendChild(background_panel_id);
-background_id.appendChild(qrcode_panel);
-document.body.appendChild(background_id);
-
-document.getElementById('qrcode_panel').style.left=(window.screen.availWidth-300)/2+'px';
-document.getElementById('qrcode_panel').style.top=(window.screen.availHeight-400)/3+'px';
-window.onresize = function(){
-	document.getElementById('qrcode_panel').style.left=(window.screen.availWidth-300)/2+'px';
-	document.getElementById('qrcode_panel').style.top=(window.screen.availHeight-400)/3+'px';
-}
-new QRCode('qrcode_image', {text: qr_text,width : 256,height : 256});
-
-function qr_close(){
-	document.getElementById('qrcode_background').parentNode.removeChild(document.getElementById('qrcode_background'));
+window.onload=function(){
+	chrome.tabs.executeScript( {
+		code: "to_popup_text"
+	}, function(str) {
+		console.log(str);
+		if(!str || str[0].length==0){
+			chrome.tabs.query({active: true, currentWindow: true},function (tabs){
+				var qr_text = tabs[0].url;
+				var qrcode_panel = document.createElement('DIV');
+				var qrcode_text = document.createElement('DIV');
+				qrcode_text.className='qrcode_text';
+				var qrcode_text_p = document.createElement('P');
+				qrcode_text_p.innerHTML = tabs[0].title;
+				var qrcode_close = document.createElement('DIV');
+				qrcode_panel.id='qrcode_panel';
+				qrcode_panel.className='qrcode_panel';
+				var qrcode_image = document.createElement('DIV');
+				qrcode_image.id='qrcode_image';
+				qrcode_image.className='qrcode_image';
+				qrcode_text.appendChild(qrcode_text_p);
+				qrcode_panel.appendChild(qrcode_image);
+				qrcode_panel.appendChild(qrcode_text);
+				document.getElementById('panel').appendChild(qrcode_panel);
+				if(qr_text.length > 200){
+					new QRCode('qrcode_image', {text: qr_text,width : 256,height : 256});
+					document.getElementById('panel').style.width='276px';
+					document.body.style.height='326px';
+				}else{
+					new QRCode('qrcode_image', {text: qr_text,width : 128,height : 128});
+					document.getElementById('panel').style.width='148px';
+				}
+				chrome.tabs.executeScript({code: "to_popup_text='';"});
+			});
+		}else{
+			var qr_text = str[0];
+			var qrcode_panel = document.createElement('DIV');
+			var qrcode_text = document.createElement('DIV');
+			qrcode_text.className='qrcode_text';
+			var qrcode_text_p = document.createElement('P');
+			qrcode_text_p.innerHTML = qr_text;
+			var qrcode_close = document.createElement('DIV');
+			qrcode_panel.id='qrcode_panel';
+			qrcode_panel.className='qrcode_panel';
+			var qrcode_image = document.createElement('DIV');
+			qrcode_image.id='qrcode_image';
+			qrcode_image.className='qrcode_image';
+			qrcode_text.appendChild(qrcode_text_p);
+			qrcode_panel.appendChild(qrcode_image);
+			qrcode_panel.appendChild(qrcode_text);
+			document.getElementById('panel').appendChild(qrcode_panel);
+			if(qr_text.length > 200){
+				new QRCode('qrcode_image', {text: qr_text,width : 256,height : 256});
+				document.getElementById('panel').style.width='276px';
+				document.body.style.height='326px';
+			}else{
+				new QRCode('qrcode_image', {text: qr_text,width : 128,height : 128});
+				document.getElementById('panel').style.width='148px';
+			}
+			chrome.tabs.executeScript({code: "to_popup_text='';"});
+		}
+	});
 }

@@ -5,12 +5,14 @@
 		chrome.pageAction.show(table_id);
 	}
 };
+
 function draw(str,tab){
 	chrome.tabs.executeScript(null,{code: "var qr_text=\'"+str+"\'"});
 	console.log(str);
 	chrome.tabs.insertCSS(null,{file:'qrcoder_css.css'});
 	chrome.tabs.executeScript(null,{file: "codePanel.js"});
 }
+
 
 chrome.tabs.onUpdated.addListener(check);
 
